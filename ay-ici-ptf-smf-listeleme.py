@@ -17,7 +17,6 @@ payload = {
     "startDate": yil+"-"+ay+"-"+"01T00:00:00+03:00"
 }
 
-# POST isteği gönderiyoruz
 response = requests.post(api_url, json=payload)
 bulk_data = response.json()
 
