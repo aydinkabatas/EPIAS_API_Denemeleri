@@ -5,6 +5,7 @@ import calendar
 import ctypes
 import locale
 import time
+import getkey
 
 
 locale.setlocale(locale.LC_ALL, 'tr_TR')
@@ -15,6 +16,14 @@ yil=str(today_date.year)
 ay=str(today_date.month-1) if len(str(today_date.month-1))==2 else '0'+str(today_date.month-1)
 son_gun=str(calendar.monthrange(today_date.year, today_date.month-1)[1])
 
+
+TGT=getkey.get_TGT()
+
+apiheader= {
+    "TGT":          TGT,
+    "Content-Type": "application/json"
+}
+
 api_url = "https://seffaflik.epias.com.tr/electricity-service/v1/renewables/data/unit-cost"
 
 payload = {
@@ -24,7 +33,7 @@ payload = {
 
 starttime = time.monotonic()
 while True:
-    response = requests.post(api_url, json=payload)
+    response = requests.post(api_url, json=payload, headers=apiheader)
     bulk_data = response.json()
 
     df=pd.json_normalize(bulk_data, 'items')
