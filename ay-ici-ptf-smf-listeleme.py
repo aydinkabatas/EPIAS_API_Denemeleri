@@ -2,9 +2,13 @@ import requests
 import pandas as pd
 import datetime as dt
 import calendar
+import getkey
 
 today_date=dt.datetime.now()
 
+TGT=getkey.get_TGT()
+
+apiheader="TGT:"+TGT
 
 yil=str(today_date.year)
 ay=str(today_date.month) if len(str(today_date.month))==2 else '0'+str(today_date.month)
@@ -17,7 +21,7 @@ payload = {
     "startDate": yil+"-"+ay+"-"+"01T00:00:00+03:00"
 }
 
-response = requests.post(api_url, json=payload)
+response = requests.post(api_url, json=payload, headers=apiheader)
 bulk_data = response.json()
 
 df=pd.json_normalize(bulk_data, 'items')
